@@ -1,0 +1,37 @@
+version: "3.5"
+services:
+  schema-registry:
+    image: confluentinc/cp-schema-registry:${IMAGE_TAG}
+    hostname: schema-registry
+    container_name: schema-registry
+    env_file: .env
+    depends_on:
+      - broker
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: datadelivery-schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081/
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: ${KAFKA_PROTOCOL}
+      SCHEMA_REGISTRY_KAFKASTORE_SASL_MECHANISM: PLAIN
+      SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${KAFKA_KEY}\" password=\"${KAFKA_SECRET}\";
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP}
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC: ${KAFKA_SCHEMA_TOPIC}
+      SCHEMA_REGISTRY_SCHEMA_REGISTRY_GROUP_ID: ${KAFKA_SCHEMAREGISTRY_GROUPID}
+
+  kafka-rest:
+    image: confluentinc/cp-kafka-rest:${IMAGE_TAG}
+    hostname: kafka-rest
+    container_name: kafka-rest-proxy
+    env_file: .env
+    ports:
+      - "8082:8082"
+    depends_on:
+      - schema-registry
+    environment:
+      KAFKA_REST_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP}
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://datadelivery-schema-registry:8081"
+      KAFKA_REST_CLIENT_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_REST_CLIENT_SASL_MECHANISM: PLAIN
+      KAFKA_REST_CLIENT_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${KAFKA_KEY}\" password=\"${KAFKA_SECRET}\";
