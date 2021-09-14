@@ -15,7 +15,7 @@ spec:
         app: datadelivery-kafka-rest-proxy
     spec:
       containers:
-        - image: confluentinc/cp-kafka-rest:6.2.0 # TODO: Paremetrize tag
+        - image: confluentinc/cp-kafka-rest:$(IMAGE_TAG) # TODO: Paremetrize tag
           name: cp-kafka-rest-proxy
           ports:
             - containerPort: 8082
