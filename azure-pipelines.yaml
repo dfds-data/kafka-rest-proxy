@@ -48,6 +48,7 @@ stages:
         value: "dataplatform-ajamn"
       - group: "kafka-rest-proxy-dev"
       - group: "saml2aws-dev"
+      - group: "kafka-dev"
 
     jobs:
       - deployment: K8s
@@ -81,9 +82,9 @@ stages:
                     saml2aws login --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto --skip-prompt --force --disable-keychain
                     eval $(saml2aws script --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx --idp-provider=ADFS --mfa=Auto)
                   env:
-                    SAML2AWS_PASSWORD: $(SAML2AWS_PASSWORD_DEV)
-                    SAML2AWS_USERNAME: $(SAML2AWS_USERNAME_DEV)
-                    SAML2AWS_ROLE: $(SAML2AWS_ROLE_DEV)
+                    SAML2AWS_PASSWORD: $(SAML2AWS_PASSWORD)
+                    SAML2AWS_USERNAME: $(SAML2AWS_USERNAME)
+                    SAML2AWS_ROLE: $(SAML2AWS_ROLE)
                 # Download manifest from current artifacts pipeline
                 - download: current
                   artifact: manifests
@@ -125,6 +126,7 @@ stages:
         value: "datadelivery-gexyo"
       - group: "kafka-rest-proxy"
       - group: "saml2aws"
+      - group: "kafka"
 
     jobs:
       - deployment: K8s
