@@ -48,7 +48,7 @@ stages:
         value: "dataplatform-ajamn"
       - group: "kafka-rest-proxy-dev"
       - group: "saml2aws-dev"
-      - group: "kafka-dev"
+      - group: "kafka-scoreboard-kafka-credentials"
 
     jobs:
       - deployment: K8s
@@ -126,7 +126,7 @@ stages:
         value: "datadelivery-gexyo"
       - group: "kafka-rest-proxy"
       - group: "saml2aws"
-      - group: "kafka"
+      - group: "kafka-scoreboard-kafka-credentials"
 
     jobs:
       - deployment: K8s
